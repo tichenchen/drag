@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鼠标事件</title>
+</head>
+<body>
+<div style = "position:absolute;left:100px;top:100px;width:250px;background-color:white;border:solid black;">
+    <div style="background-color:gray;border-bottom:dotted black;padding:3px;font-family:sans-serif;font-weight:bold;"
+         onmousedown = "drag(this.parentNode,event);">
+    </div>
+    <p>这是一个测试。测试中，</p><p>测试</p><p>测试,点击灰色区域鼠标移动，鼠标松开事件清除</p>
+</div>
+</body>
+<script>
+    function drag(elementToDrag,event){
+//初始化鼠标位置
+        var startX = event.clientX;
+        var startY = event.clientY;
+//带拖动元素的初始位置
+        var origX = elementToDrag.offsetLeft;
+        var origY = elementToDrag.offsetTop;
+        var deltaX = startX - origX;
+        var deltaY = startY - origY;
+        if(document.addEventListener){
+            document.addEventListener("mousemove",moveHandler,true);
+            document.addEventListener("mouseup",upHandler,true);
+        }
+        else if(document.attachEvent){
+            elementToDrag.setCapture();
+            elementToDrag.attachEvent("onmousemove",moveHandler);
+            elementToDrag.attachEvent("onmouseup",upHandler);
+            elementToDrag.attachEvent("onlosecapture",upHandler);
+        }
+        if(event.stopPropagation)event.stopPropagation();
+        else event.cancelBubble = true;
+        if(event.preventDefault)event.preventDefault();
+        else event.returnValue = true;
+
+        function moveHandler(e){
+            if(!e) e = window.event;
+            elementToDrag.style.left = (e.clientX - deltaX) + "px";
+            elementToDrag.style.top = (e.clientY - deltaY) + "px";
+            if(e.stopPropagation) e.stopPropagation();
+            else e.cancelBubble = true;
+        }
+
+        function upHandler(e){
+            if(!e) e = window.event;
+            if(document.removeEventListener){
+                document.removeEventListener("mousemove",moveHandler,true);
+                document.removeEventListener("mouseup",upHandler,true);
+            }
+            else if(document.detachEvent){
+                elementToDrag.detachEvent("onmousemove",moveHandler);
+                elementToDrag.detachEvent("onmouseup",upHandler);
+                elementToDrag.detachEvent("onlosecapture",upHandler);
+                elementToDrag.releaseCapture();
+            }
+            if(e.stopPropagation) e.stopPropagation();
+            else e.cancelBubble = true;
+        }
+    }
+
+
+</script>
+</html>

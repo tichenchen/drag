@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>媒体播放器</title>
+</head>
+<body>
+<div class="mediaplayer">
+    <div class="video">
+        <!-- poster 属性指定图像的 URI 可以在加载视频内容期间显示一幅图像-->
+        <video id="player" src="resource/movie.ogg" controls="controls"
+               width="300" height="200">
+            Video player not available.
+        </video>
+    </div>
+    <div class="controls">
+        <input type="button" value="Play" id="video-btn">
+        <span id="curtime">0</span>/<span id="duration">0</span>
+    </div>
+</div>
+<script>
+    //取得元素的引用
+    var player = document.getElementById("player"),
+            btn = document.getElementById("video-btn"),
+            curtime = document.getElementById("curtime"),
+            duration = document.getElementById("duration");
+
+    //为按钮添加事件处理程序
+    btn.addEventListener("click", function(event){
+        //表示播放器是否暂停
+        if (player.paused){
+            //媒体已接收到指令开始播放
+            player.play();
+            btn.value = "Pause";
+        } else {
+            //播放已暂停
+            player.pause();
+            btn.value = "Play";
+        }
+    });
+    //定时更新当前时间,媒体已接收到指令开始播放
+    setInterval(function(){
+        curtime.innerHTML = player.currentTime;
+        //更新播放时间,duration媒体的总播放时间（秒数）
+        duration.innerHTML = player.duration;
+    }, 250)
+</script>
+</body>
+</html>

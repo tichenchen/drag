@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖动</title>
+    <style type="text/css">
+        #dragTarget {width:488px;height:200px;padding:10px;border:1px solid #aaaaaa;}
+    </style>
+</head>
+<body>
+<p>请把 W3School 的图片拖放到矩形中：</p>
+<div id="dragTarget"></div>
+<br />
+<!-- 图像和链接的 draggable 属性自动被设置成了 true-->
+<img src="image/decoration.png" id="dragImg"  alt="Smiley face">
+<a href="video.html">video实例</a>
+<a href="mouseEvent.html">鼠标移动</a>
+<script type="text/javascript">
+    document.getElementById("dragImg").addEventListener("dragstart", function(event) {
+        // 存储拖拽数据和拖拽效果...
+        event.dataTransfer.setData("Text",event.target.id);
+        document.getElementById("dragTarget").style.width = event.currentTarget.clientWidth+"px";
+        document.getElementById("dragTarget").style.height = event.currentTarget.clientHeight+"px";
+    }, false);
+    document.getElementById("dragTarget").addEventListener("dragenter", function(event) {
+        // 阻止浏览器默认事件
+        event.preventDefault();
+    }, false);
+    document.getElementById("dragTarget").addEventListener("dragover", function(event) {
+        // 阻止浏览器默认事件
+        event.preventDefault();
+    }, false);
+    document.getElementById("dragTarget").addEventListener("drop", function(event) {
+        event.preventDefault();
+        var data=event.dataTransfer.getData("Text");
+        event.target.appendChild(document.getElementById(data));
+    }, false);
+</script>
+</body>
+</html>
